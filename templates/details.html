@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  details
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <br>
+    <h4 class="display-4" style="border-bottom:1px solid #eaecef">{{ review_details_final[0]["title"] }}</h4>
+    <br>
+    <h2>Details:</h2>
+    <div>
+      <br>
+      <table class="table">
+        <tr>
+          <td>
+            <h5>Author:</h5>
+            <p class="lead">{{ review_details_final[0]["author"] }}</p>
+          </td>
+          <td>
+            <h5>Total Reviews on Goodreads:</h5>
+            <p class="lead">{{ goodreads_details["ratings_count"] }}</p>
+          </td>
+          <td rowspan="2">
+            <img src="/static/images/book_painting.jpg" style="height:242px">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h5>Year Published:</h5>
+            <p class="lead">{{ review_details_final[0]["year"] }}</p>
+          </td>
+          <td>
+            <h5>Average Goodreads Review:</h5>
+            <p class="lead">{{ goodreads_details["average_rating"] }}</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h5>ISBN:</h5>
+            <p class="lead" id="isbn">{{ review_details_final[0]["isbn"] }}</p>
+          </td>
+          <td>
+          </td>
+          <td>
+            <button class="btn btn-primary btn-lg" id="leave_review">Leave a review!</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <div>
+      <div id="review_box">
+        <br>
+        <form action="/submit_review" id="book_review" method="post">
+          <div id="review_info">
+            <h4>Review for <em>{{ review_details_final[0]["title"] }}</em></h4>
+            <p class="lead">Each user is only allowed one review per book</p>
+            <input name="review_isbn" hidden value="{{ review_details_final[0]['isbn'] }}">
+            <input name="review_title" hidden value="{{ review_details_final[0]['title'] }}">
+            <div class="form-group">
+              <label id="review_label">Rating:</label>
+              <br>
+              <div class="form-group custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="rating_1" name="book_rating" checked value="1">
+                <label class="custom-control-label" for="rating_1">1</label>
+              </div>
+              <div class="form-group custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="rating_2" name="book_rating" value="2">
+                <label class="custom-control-label" for="rating_2">2</label>
+              </div>
+              <div class="form-group custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="rating_3" name="book_rating" value="3">
+                <label class="custom-control-label" for="rating_3">3</label>
+              </div>
+              <div class="form-group custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="rating_4" name="book_rating" value="4">
+                <label class="custom-control-label" for="rating_4">4</label>
+              </div>
+              <div class="form-group custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="rating_5" name="book_rating" value="5">
+                <label class="custom-control-label" for="rating_5">5</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label id="review_label">Review:</label>
+              <textarea class="form-control" rows="5" type="text" name="review_text" placeholder="Leave your review here"></textarea>
+            </div>
+          </div>
+        </form>
+        <button class="btn btn-primary" id="submit_review">Submit Review</button>
+        <br>
+        <br>
+        <p class="text-danger" id="invalid_message"></p>
+      </div>
+      <h2 style="border-bottom:1px solid #eaecef; text-align:left">Reviews:</h2>
+      <br>
+      {% if review_details_final[0]["username"] %}
+      {% for review in review_details_final %}
+      <div class="card" id="review_text">
+        <div class="card-body">
+          <h5 class="card-title">{{ review["username"] }}<p id="review_date" class="text-black-50">{{ review["date"] }}</p><p id="rating">Rating: {{ review["rating"] }} / 5</p></h5>
+          <p class="card-text">{{ review["review"] }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="lead">No reviews for this book yet!</p>
+      {% endif %}
+  </div>
+</div>
+<script>
+    document.getElementById("leave_review").onclick = () => {
+      document.getElementById("review_box").style.display = "block"
+    }
+
+    document.getElementById("submit_review").onclick = e => {
+      console.log(document.getElementById("isbn").innerHTML)
+      let isbn = document.getElementById("isbn").innerHTML
+      $.get(`/check_reviews?isbn=${isbn}`, function(data) {
+        if (data === true) {
+          e.preventDefault()
+          invalid_input_indicator("You've already submitted a review for this book!")
+          return false
+        } else {
+          document.getElementById("book_review").submit()
+        }
+      })
+    }
+
+</script>
+{% endblock %}

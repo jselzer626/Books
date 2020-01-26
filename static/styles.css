@@ -1,0 +1,42 @@
+.headerimg {
+  height: 40px;
+}
+
+.card {
+  text-align: left;
+}
+
+#review_info {
+  text-align: left;
+}
+
+#rating {
+  float: right;
+  display: inline;
+}
+
+#review_label {
+  font-weight: bold;
+}
+
+#review_date {
+  display: inline;
+  margin-left: 15px;
+  font-weight: normal;
+}
+
+#review_box {
+  display: none;
+}
+
+main {
+   text-align: center;
+}
+
+.startbutton {
+  margin-left: 25px;
+}
+
+.text-danger {
+  visibility: hidden;
+}

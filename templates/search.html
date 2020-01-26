@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Search
+{% endblock %}
+
+{% block main %}
+  <div class="container">
+    <br>
+    <h4 class="display-4" style="border-bottom: 1px solid #eaecef">Find Books</h4>
+    <br>
+    <form class="form-group" method="post" action="/search">
+      <label class="lead">Start typing a title, author or ISBN</label>
+      <br>
+      <input autofocus type="text" id="bookinfo" name="info">
+      <br>
+      <br>
+      <button class="btn btn-primary" id="search">Search</button>
+      <br>
+      <br>
+      <p class="text-danger" id="invalid_message"></p>
+    </form>
+    {% if results %}
+    <h4>Results</h4>
+    <div id="booklist">
+    <table class="table">
+      <p class="lead">Click on book title to see details and reviews</p>
+      <th>ISBN</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Year</th>
+      {% for result in results %}
+      <tr>
+        <td>{{ result['isbn'] }}</td>
+        <td><a href="/bookdetails?q={{result['isbn']}}">{{ result['title'] }}</a></td>
+        <td>{{ result['author'] }}</td>
+        <td>{{ result['year'] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+    {% elif message %}
+    <div class="alert alert-warning" role="alert">{{ message }}
+    </div>
+    {% endif %}
+  </div>
+    <script>
+      document.getElementById("search").onclick = e => {
+        if (document.getElementById("bookinfo").value === '') {
+          invalid_input_indicator("Please enter something into the search bar")
+          e.preventDefault()
+          return false
+        } else {
+          document.getElementById("search").submit()
+        }
+      }
+    </script>
+{% endblock %}

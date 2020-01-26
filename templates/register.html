@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block main %}
+<div class="container">
+<form action="/register" method="post">
+  <div class="form-group">
+    <br>
+    <br>
+    <h4 class="display-4">Register</h4>
+    <br>
+  </div>
+  <div class="form-group">
+    <label>New Username</label>
+    <input class="form-control" autofocus id="username" name="username" type="text" Placeholder="New Username">
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input class="form-control" name="password" id="password" type="password" Placeholder="Password">
+    <label class="small muted">Password must be at least 5 characters</label>
+  </div>
+  <div class="form-group">
+    <label>Re-enter Password</label>
+    <input class="form-control" name="password_confirm" id="password_confirm" type="password" Placeholder="Re-Enter Password">
+  </div>
+  <button class="btn btn-primary" type="submit" id="register">Register</button>
+</form>
+<br>
+<p id="invalid_message" class="text-danger">{{ message }}</p>
+<br>
+<div>
+  <p class="lead">Already Have an Account?<button class="btn btn-primary startbutton" id="login">Login</button></p>
+</div>
+</div>
+
+  <script>
+
+    let username = document.getElementById("username")
+    let password = document.getElementById("password")
+    let confirm_password = document.getElementById("password_confirm")
+
+    //if username has already been taken, make sure that error message is displayed (check app.route("/register") for details on verification)
+    document.getElementById("invalid_message").innerHTML === "Username already taken" ? invalid_input_indicator("Username already taken") : ''
+
+    //confirm that user inputted password is greater than five characters and equal to password confirm input
+    document.getElementById("register").onclick = e => {
+
+    if (password.value.length < 5 || password.value !== confirm_password.value ) {
+      e.preventDefault()
+      invalid_input_indicator("Invalid password")
+      return false
+    }
+    //submit - app route will check if user name is duplicative and redirect user to this page with an error message if so
+    else {
+      document.getElementById("register").submit()
+      }
+    }
+
+    //redirect to login page if button clicked
+    document.getElementById("login").onclick = () => {
+      window.location.href = "/login"
+    }
+
+  </script>
+
+
+{% endblock %}

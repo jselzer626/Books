@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Home
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+  <br>
+  {% if success_message %}
+  <div class="alert alert-success" role="alert">{{ success_message }}
+  </div>
+  {% endif %}
+  <br>
+  <h2 class="display-4">Welcome {{ session.username}}!</h2>
+  <br>
+  <h5 class="lead">Please select from the options below</h5>
+  <br>
+  <br>
+  <div style="display:inline-block">
+    <img src="/static/images/review_icon.png" style="height:200px; padding-left:100px; padding-right:100px">
+    <a href="/search"><img src="/static/images/book_cartoon.png" style="height:200px; padding-left:100px; padding-right:100px"></a>
+    <br>
+  </div>
+  <div>
+    <br>
+    <p class="lead" id="check_reviews" style="margin-right: 240px; display:inline-block">Check Past Reviews</p>
+    <p class="lead" id="go_to_search" style="display:inline-block">Search Books</p>
+  </div>
+
+</div>
+
+{% endblock %}
