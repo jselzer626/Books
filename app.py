@@ -31,7 +31,7 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 
 Session(app)
 
-# adding a comment here for github commit testing
+
 # Set up database
 engine = create_engine("postgres://lowtkihiopplqx:c294ea36e059e381fcc923e236896860d16d682c459290e1bdd1ef4de4dc4dc5@ec2-174-129-255-15.compute-1.amazonaws.com:5432/d39970tuquglom")
 db = scoped_session(sessionmaker(bind=engine))
