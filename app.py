@@ -167,6 +167,16 @@ def submit_review():
 
         return render_template("index.html", success_message=f"Review for {review_to_upload['review_title']} successfully added!")
 
+@app.route("/api/<isbn>")
+@login_required
+def api(isbn):
+
+    final_display_details = ["title", "author", "year", "isbn", "review_count", "average_score"]
+
+    goodreads_details = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_api_key, "isbns": isbn}).json()["books"][0]
+    print(goodreads_details)
+
+
 if __name__ == '__main__':
  app.debug = True
  port = int(os.environ.get('PORT', 5000))
