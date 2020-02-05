@@ -6,11 +6,11 @@
 
 {% block main %}
 <div class="container">
-<form action="/register" method="post">
+<form action="/register" method="post" class="register_login_form">
   <div class="form-group">
     <br>
     <br>
-    <h4 class="display-4">Register</h4>
+    <h4 class="display-4">Sign Up</h4>
     <br>
   </div>
   <div class="form-group">
@@ -50,7 +50,7 @@
 
     if (password.value.length < 5 || password.value !== confirm_password.value ) {
       e.preventDefault()
-      invalid_input_indicator("Invalid password")
+      invalid_input_indicator("Invalid entries. Please ensure fields are not blank and passwords match")
       return false
     }
     //submit - app route will check if user name is duplicative and redirect user to this page with an error message if so

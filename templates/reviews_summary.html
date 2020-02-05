@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Review Summary
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+  <br>
+  <br>
+  <h4 class="display-4">Past Reviews for {{ session.username }}:</h4>
+
+  {% if reviews %}
+  <br>
+  <br>
+  {% for review in reviews %}
+  <h5 style="text-align:left"><a href="/bookdetails?q={{ review['isbn'] }}">{{ review["title"] }}</a></h5>
+  <div class="card" id="review_text">
+    <div class="card-body">
+      <h5 class="card-title">{{ review["username"] }}<p id="review_date" class="text-black-50">{{ review["date"] }}</p><p id="rating">Rating: {{ review["rating"] }} / 5</p></h5>
+      <p class="card-text">{{ review["review"] }}</p>
+    </div>
+  </div>
+  <br>
+  {% endfor %}
+  {% else %}
+  <br>
+  <br>
+  <p class="lead">You haven't submitted any reviews yet!</p>
+  <br>
+  <img src="/static/images/sadface.png" style="height:250px">
+  {% endif %}
+
+</div>
+
+
+{% endblock %}

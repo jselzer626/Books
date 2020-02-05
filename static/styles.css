@@ -6,6 +6,11 @@
   text-align: left;
 }
 
+.register_login_form {
+  margin: auto;
+  width: 500px;
+}
+
 #review_info {
   text-align: left;
 }

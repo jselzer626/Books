@@ -6,45 +6,45 @@
 
 {% block main %}
 <div class="container">
-  <form action="/login" method="post">
-    <div class="form-group">
-      <br>
-      <br>
-      <h4 class="display-4">Login</h4>
-    </div>
-    <div class="form-group">
+  <form action="/login" method="post" class="register_login_form">
+    <br>
+    <br>
+    <h4 class="display-4">Login</h4>
+    <br>
+    <div class="form-group col-xs-3">
       <label>Username</label>
-      <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+      <input autocomplete="off" autofocus class="form-control" name="username" id="username" placeholder="Username" type="text">
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input autocomplete="off" class="form-control" name="password" placeholder="Password" type="password">
+      <input autocomplete="off" class="form-control" name="password" id="password" placeholder="Password" type="password">
     </div>
-    <button class="btn btn-primary" id="login">Login</button>
   </form>
+  <button class="btn btn-primary" id="login">Login</button>
+  <br>
   <br>
   <p id="invalid_message" class="text-danger">{{ message }}</p>
-  <br>
   <div>
     <p class="lead">No Account Yet?<button class="btn btn-primary startbutton" id="register">Register</button></p>
   </div>
 </div>
   <script>
     //if server rendered template with error message then display
-    document.getElementById("invalid_message").innerHTML === "Incorrect username or password" ? invalid_input_indicator("Incorrect username or password") : ''
+    document.getElementById("invalid_message").innerHTML === "Incorrect username or password" ? invalid_input_indicator("Incorrect username or password.") : ''
 
     //if username empty or password less than 5 character prevent from accessing server
     document.getElementById("login").onclick = e => {
+      console.log("here")
       let username = document.getElementById("username")
       let password = document.getElementById("password")
 
       if (!username.value || password.value.length < 5){
-        invalid_input_indicator("Invalid username or password")
+        invalid_input_indicator("Invalid entries. Please ensure fields are not blank.")
         e.preventDefault()
         return false
       }
       else {
-        document.getElementById("login").submit()
+        document.getElementsByTagName("form")[0].submit()
       }
     }
 

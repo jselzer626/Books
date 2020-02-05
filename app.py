@@ -95,6 +95,14 @@ def logout():
 
     return redirect("/")
 
+@app.route("/retrieve_reviews", methods=["GET"])
+@login_required
+def retrieve_reviews():
+
+    reviews = db.execute("SELECT * FROM books JOIN reviews ON reviews.isbn = books.isbn WHERE reviews.username=:username", {"username": session["username"]}).fetchall()
+
+    return render_template("reviews_summary.html", reviews=[dict(review) for review in reviews])
+
 @app.route("/search", methods=["GET", "POST"])
 @login_required
 def searchbooks():
@@ -171,11 +179,14 @@ def submit_review():
 @login_required
 def api(isbn):
 
-    final_display_details = ["title", "author", "year", "isbn", "review_count", "average_score"]
+    return_details = ["title", "author", "year", "isbn", "reviews_count", "average_rating"]
 
+    book_details = dict(db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": isbn}).fetchall()[0])
     goodreads_details = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_api_key, "isbns": isbn}).json()["books"][0]
-    print(goodreads_details)
 
+    book_details.update(goodreads_details)
+
+    return jsonify({detail: book_details[detail] for detail in return_details})
 
 if __name__ == '__main__':
  app.debug = True
