@@ -181,9 +181,14 @@ def api(isbn):
 
     return_details = ["title", "author", "year", "isbn", "reviews_count", "average_rating"]
 
-    book_details = dict(db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": isbn}).fetchall()[0])
-    goodreads_details = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_api_key, "isbns": isbn}).json()["books"][0]
+    #see if there an entry in books table for queried isbn
+    try:
+        book_details = dict(db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": isbn}).fetchall()[0])
+    except IndexError:
+        return jsonify({"Error": "No such book found"}), 404
 
+    #retrieve and combine with goodreads data
+    goodreads_details = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": goodreads_api_key, "isbns": isbn}).json()["books"][0]
     book_details.update(goodreads_details)
 
     return jsonify({detail: book_details[detail] for detail in return_details})
